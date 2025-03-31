@@ -106,38 +106,196 @@
       bottom: 30px;
       opacity: 1;
     }
+    .offer-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .offer-price {
+      color: #28a745;
+    }
+    .offer-status {
+      background-color: #007bff;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 5px;
+    }
+    .offer-info p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .offer-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .offer-buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .offer-buttons button:first-child {
+      background-color: #28a745;
+      color: white;
+    }
+    .offer-buttons button:last-child {
+      background-color: #dc3545;
+      color: white;
+    }
   </style>
 </head>
 <body>
+
 <div id="appStart">
   <button class="start-button" onclick="startAsDriver()">Ben Bir Driver'ım</button>
   <button class="start-button" onclick="alert('Yolcu ekranı yakında aktif olacak!')">Ben Bir Yolcuyum</button>
 </div>
+
 <div id="mapWrapper">
   <div class="sidebar">
     <h2>ErX Driver</h2>
     <ul>
-      <li>📥 Gelen Kutusu</li>
-      <li>💡 Tavsiyeler</li>
-      <li>🎁 Fırsatlar</li>
-      <li>📈 Kazançlar</li>
+      <li onclick="alert('Gelen Kutusu')">📥 Gelen Kutusu</li>
+      <li onclick="alert('Tavsiyeler')">💡 Tavsiyeler</li>
+      <li onclick="alert('Fırsatlar')">🎁 Fırsatlar</li>
+      <li onclick="alert('Kazançlar')">📈 Kazançlar</li>
+      <li onclick="alert('Cüzdan')">💳 Cüzdan</li>
+      <li onclick="alert('Hesap')">👤 Hesap</li>
+      <hr/>
+      <li onclick="alert('Eğitim Merkezi')">📚 Eğitim Merkezi</li>
+      <li onclick="alert('Yardım Merkezi')">🆘 Yardım Merkezi</li>
+      <li onclick="alert('Canlı Destek')">💬 Canlı Destek</li>
     </ul>
   </div>
   <div class="earnings">$89.93</div>
   <div id="map"></div>
-  <button class="status-button" onclick="alert('ONLINE/OFFLINE modu gelecek!')">GO ONLINE</button>
+  <button class="status-button" id="toggleStatusButton" onclick="toggleOnlineStatus()">GO ONLINE</button>
 </div>
+
 <script>
-  function startAsDriver(){
-    document.getElementById('appStart').style.display='none';
-    document.getElementById('mapWrapper').style.display='block';
-    const map=L.map('map').setView([28.3772,-81.5707],13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    const carIcon=L.icon({iconUrl:'https://cdn-icons-png.flaticon.com/512/744/744465.png',iconSize:[40,40]});
-    for(let i=0;i<70;i++){
-      L.marker([28.3772+(Math.random()-0.5)*0.01,-81.5707+(Math.random()-0.5)*0.01],{icon:carIcon}).addTo(map);
+  let vehicles = [];
+  let isOnline = false;
+  let offerInterval;
+
+  function startAsDriver() {
+    document.getElementById("appStart").style.display = "none";
+    document.getElementById("mapWrapper").style.display = "block";
+
+    const map = L.map("map").setView([28.3772, -81.5707], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    const carIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/744/744465.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 20]
+    });
+
+    const baseLat = 28.3772;
+    const baseLng = -81.5707;
+
+    for (let i = 0; i < 70; i++) {
+      let lat = baseLat + (Math.random() - 0.5) * 0.01;
+      let lng = baseLng + (Math.random() - 0.5) * 0.01;
+      const marker = L.marker([lat, lng], { icon: carIcon }).addTo(map);
+      vehicles.push({ lat, lng, marker });
+    }
+
+    setInterval(() => {
+      vehicles.forEach(vehicle => {
+        vehicle.lat += (Math.random() - 0.5) * 0.001;
+        vehicle.lng += (Math.random() - 0.5) * 0.001;
+        vehicle.marker.setLatLng([vehicle.lat, vehicle.lng]);
+      });
+    }, 1200);
+  }
+
+  function toggleOnlineStatus() {
+    const btn = document.getElementById('toggleStatusButton');
+
+    if (!isOnline) {
+      isOnline = true;
+      btn.innerText = 'GO OFFLINE';
+      btn.style.backgroundColor = '#dc3545';
+      alert('Şu anda ONLINE durumdasınız.');
+
+      offerInterval = setInterval(() => {
+        showIncomingOffer();
+      }, 20000); // 20 saniyede bir teklif
+    } else {
+      isOnline = false;
+      btn.innerText = 'GO ONLINE';
+      btn.style.backgroundColor = '#28a745';
+      alert('Şu anda OFFLINE durumdasınız.');
+
+      clearInterval(offerInterval);
     }
   }
+
+  function showIncomingOffer() {
+    const pickupAddress = "1234 Main St, Orlando, FL";
+    const dropoffAddress = "5678 Palm Ave, Kissimmee, FL";
+    const pickupDistance = (Math.random() * 3 + 1).toFixed(1);
+    const dropoffDistance = (Math.random() * 10 + 3).toFixed(1);
+    const eta = Math.floor(Math.random() * 10 + 5);
+    const price = (Math.random() * 15 + 5).toFixed(2);
+
+    const offerBox = document.createElement('div');
+    offerBox.className = 'offer-box';
+    offerBox.innerHTML = `
+      <div class="offer-header">
+        <span class="offer-price">$${price}</span>
+        <span class="offer-status">Exclusive</span>
+      </div>
+      <div class="offer-info">
+        <p><strong>Alım Noktası:</strong><br>${pickupAddress}</p>
+        <p><strong>Sürücüye Uzaklığı:</strong> ${pickupDistance} mil</p>
+        <p><strong>Bırakılacak Adres:</strong><br>${dropoffAddress}</p>
+        <p><strong>Mesafe:</strong> ${dropoffDistance} mil</p>
+        <p><strong>Tahmini Süre:</strong> ${eta} dakika</p>
+      </div>
+      <div class="offer-buttons">
+        <button onclick="acceptOffer(this.parentElement.parentElement)">✅ Kabul Et</button>
+        <button onclick="rejectOffer(this.parentElement.parentElement)">❌ Reddet</button>
+      </div>
+    `;
+    document.body.appendChild(offerBox);
+
+    // Animasyon için sınıf ekle
+    setTimeout(() => {
+      offerBox.classList.add('visible');
+    }, 50);
+
+    // Sesli bildirim
+    const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1152-pristine.mp3");
+    audio.play();
+  }
+
+  function acceptOffer(offerBox) {
+    offerBox.remove();
+    alert("Teklif kabul edildi! 🚗 Rota oluşturuluyor...");
+
+    // Örnek kazanç güncellemesi
+    const earningsEl = document.querySelector(".earnings");
+    const currentEarnings = parseFloat(earningsEl.innerText.replace("$", ""));
+    const added = (Math.random() * 10 + 5).toFixed(2);
+    earningsEl.innerText = `$${(currentEarnings + parseFloat(added)).toFixed(2)}`;
+  }
+
+  function rejectOffer(offerBox) {
+    offerBox.remove();
+    alert("Teklif reddedildi.");
+  }
 </script>
+
 </body>
 </html>
