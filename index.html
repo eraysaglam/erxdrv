@@ -92,7 +92,7 @@
       position: fixed;
       bottom: -400px;
       right: 30px;
-      width: 320px;
+      width: 300px;
       background: white;
       border: 2px solid #222;
       border-radius: 15px;
@@ -106,30 +106,13 @@
       bottom: 30px;
       opacity: 1;
     }
-    .offer-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .offer-price {
-      color: #28a745;
-    }
-    .offer-status {
-      background-color: #007bff;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 5px;
-    }
-    .offer-info p {
-      margin: 5px 0;
-      font-size: 14px;
+    .offer-box h3 {
+      margin-top: 0;
     }
     .offer-buttons {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .offer-buttons button {
       flex: 1;
@@ -139,7 +122,6 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 14px;
     }
     .offer-buttons button:first-child {
       background-color: #28a745;
@@ -247,22 +229,16 @@
     const pickupDistance = (Math.random() * 3 + 1).toFixed(1);
     const dropoffDistance = (Math.random() * 10 + 3).toFixed(1);
     const eta = Math.floor(Math.random() * 10 + 5);
-    const price = (Math.random() * 15 + 5).toFixed(2);
 
     const offerBox = document.createElement('div');
     offerBox.className = 'offer-box';
     offerBox.innerHTML = `
-      <div class="offer-header">
-        <span class="offer-price">$${price}</span>
-        <span class="offer-status">Exclusive</span>
-      </div>
-      <div class="offer-info">
-        <p><strong>Alım Noktası:</strong><br>${pickupAddress}</p>
-        <p><strong>Sürücüye Uzaklığı:</strong> ${pickupDistance} mil</p>
-        <p><strong>Bırakılacak Adres:</strong><br>${dropoffAddress}</p>
-        <p><strong>Mesafe:</strong> ${dropoffDistance} mil</p>
-        <p><strong>Tahmini Süre:</strong> ${eta} dakika</p>
-      </div>
+      <h3>📦 Yeni Teklif</h3>
+      <p><strong>Alım Noktası:</strong><br>${pickupAddress}</p>
+      <p><strong>Sürücüye Uzaklığı:</strong> ${pickupDistance} mil</p>
+      <p><strong>Bırakılacak Adres:</strong><br>${dropoffAddress}</p>
+      <p><strong>Mesafe:</strong> ${dropoffDistance} mil</p>
+      <p><strong>Tahmini Süre:</strong> ${eta} dakika</p>
       <div class="offer-buttons">
         <button onclick="acceptOffer(this.parentElement.parentElement)">✅ Kabul Et</button>
         <button onclick="rejectOffer(this.parentElement.parentElement)">❌ Reddet</button>
@@ -289,6 +265,8 @@
     const currentEarnings = parseFloat(earningsEl.innerText.replace("$", ""));
     const added = (Math.random() * 10 + 5).toFixed(2);
     earningsEl.innerText = `$${(currentEarnings + parseFloat(added)).toFixed(2)}`;
+
+    // İsteğe bağlı: haritada rota vs. ekleyebiliriz.
   }
 
   function rejectOffer(offerBox) {
@@ -296,6 +274,3 @@
     alert("Teklif reddedildi.");
   }
 </script>
-
-</body>
-</html>
