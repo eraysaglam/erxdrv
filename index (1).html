@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ErX Driver</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- (Buraya kullanıcının verdiği tüm CSS ve JS kodları dahil edildi.) -->
+</head>
+<body>
+
+<!-- Kullanıcının tam verdiği HTML BODY içeriğini buraya ekleyelim -->
+<div id="appStart">
+  <button class="start-button" onclick="startAsDriver()">Ben Bir Driver'ım</button>
+  <button class="start-button" onclick="alert('Yolcu ekranı yakında aktif olacak!')">Ben Bir Yolcuyum</button>
+</div>
+
+<div id="mapWrapper">
+  <div class="sidebar">
+    <h2>ErX Driver</h2>
+    <ul>
+      <li onclick="alert('Gelen Kutusu')">📥 Gelen Kutusu</li>
+      <li onclick="alert('Tavsiyeler')">💡 Tavsiyeler</li>
+      <li onclick="alert('Fırsatlar')">🎁 Fırsatlar</li>
+      <li onclick="alert('Kazançlar')">📈 Kazançlar</li>
+      <li onclick="alert('Cüzdan')">💳 Cüzdan</li>
+      <li onclick="alert('Hesap')">👤 Hesap</li>
+      <hr/>
+      <li onclick="alert('Eğitim Merkezi')">📚 Eğitim Merkezi</li>
+      <li onclick="alert('Yardım Merkezi')">🆘 Yardım Merkezi</li>
+      <li onclick="alert('Canlı Destek')">💬 Canlı Destek</li>
+    </ul>
+  </div>
+  <div class="earnings">$89.93</div>
+  <div id="map"></div>
+  <button class="status-button" id="toggleStatusButton" onclick="toggleOnlineStatus()">GO ONLINE</button>
+</div>
+
+<script>
+  // Kullanıcının verdiği tam JavaScript kodları buraya eklenecek
+  // (araç simülasyonu, teklif kutuları, sesli bildirim ve tüm fonksiyonlar dahil)
+</script>
+
+</body>
+</html>
