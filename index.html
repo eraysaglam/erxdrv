@@ -88,49 +88,6 @@
       font-size: 16px;
       cursor: pointer;
     }
-    .offer-box {
-      position: fixed;
-      bottom: -400px;
-      right: 30px;
-      width: 300px;
-      background: white;
-      border: 2px solid #222;
-      border-radius: 15px;
-      padding: 20px;
-      z-index: 9999;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: all 0.5s ease;
-      opacity: 0;
-    }
-    .offer-box.visible {
-      bottom: 30px;
-      opacity: 1;
-    }
-    .offer-box h3 {
-      margin-top: 0;
-    }
-    .offer-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-    }
-    .offer-buttons button {
-      flex: 1;
-      margin: 0 5px;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .offer-buttons button:first-child {
-      background-color: #28a745;
-      color: white;
-    }
-    .offer-buttons button:last-child {
-      background-color: #dc3545;
-      color: white;
-    }
   </style>
 </head>
 <body>
@@ -224,53 +181,35 @@
   }
 
   function showIncomingOffer() {
-    const pickupAddress = "1234 Main St, Orlando, FL";
-    const dropoffAddress = "5678 Palm Ave, Kissimmee, FL";
-    const pickupDistance = (Math.random() * 3 + 1).toFixed(1);
-    const dropoffDistance = (Math.random() * 10 + 3).toFixed(1);
-    const eta = Math.floor(Math.random() * 10 + 5);
-
     const offerBox = document.createElement('div');
-    offerBox.className = 'offer-box';
+    offerBox.style.position = 'fixed';
+    offerBox.style.bottom = '30px';
+    offerBox.style.right = '30px';
+    offerBox.style.backgroundColor = 'white';
+    offerBox.style.border = '2px solid #000';
+    offerBox.style.padding = '20px';
+    offerBox.style.borderRadius = '10px';
+    offerBox.style.zIndex = '9999';
     offerBox.innerHTML = `
-      <h3>📦 Yeni Teklif</h3>
-      <p><strong>Alım Noktası:</strong><br>${pickupAddress}</p>
-      <p><strong>Sürücüye Uzaklığı:</strong> ${pickupDistance} mil</p>
-      <p><strong>Bırakılacak Adres:</strong><br>${dropoffAddress}</p>
-      <p><strong>Mesafe:</strong> ${dropoffDistance} mil</p>
-      <p><strong>Tahmini Süre:</strong> ${eta} dakika</p>
-      <div class="offer-buttons">
-        <button onclick="acceptOffer(this.parentElement.parentElement)">✅ Kabul Et</button>
-        <button onclick="rejectOffer(this.parentElement.parentElement)">❌ Reddet</button>
-      </div>
+      <h3>Yeni Teklif 🚗</h3>
+      <p>Mesafe: ${(Math.random() * 5 + 1).toFixed(1)} km</p>
+      <p>Ücret: $${(Math.random() * 15 + 5).toFixed(2)}</p>
+      <button style="margin-right:10px; padding:8px 16px;" onclick="acceptOffer(this.parentElement)">Kabul Et</button>
+      <button style="padding:8px 16px;" onclick="rejectOffer(this.parentElement)">Reddet</button>
     `;
     document.body.appendChild(offerBox);
-
-    // Animasyon için sınıf ekle
-    setTimeout(() => {
-      offerBox.classList.add('visible');
-    }, 50);
-
-    // Sesli bildirim
-    const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1152-pristine.mp3");
-    audio.play();
   }
 
   function acceptOffer(offerBox) {
+    alert('Teklif kabul edildi! 🚀');
     offerBox.remove();
-    alert("Teklif kabul edildi! 🚗 Rota oluşturuluyor...");
-
-    // Örnek kazanç güncellemesi
-    const earningsEl = document.querySelector(".earnings");
-    const currentEarnings = parseFloat(earningsEl.innerText.replace("$", ""));
-    const added = (Math.random() * 10 + 5).toFixed(2);
-    earningsEl.innerText = `$${(currentEarnings + parseFloat(added)).toFixed(2)}`;
-
-    // İsteğe bağlı: haritada rota vs. ekleyebiliriz.
   }
 
   function rejectOffer(offerBox) {
+    alert('Teklif reddedildi. ❌');
     offerBox.remove();
-    alert("Teklif reddedildi.");
   }
 </script>
+
+</body>
+</html>
